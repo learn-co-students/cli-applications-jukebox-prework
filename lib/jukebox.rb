@@ -16,9 +16,21 @@ end
 
 def play(songs)
   puts "Please enter a song name or number:"
-  user_input = gets.strip
-  if songs.find(user_input) == user_input
-    puts "Playing #{user_input}"
+  user_input = gets.strip    
+  found = false
+  if user_input.to_i
+    if songs[user_input.to_i-1]
+      play_song = songs[user_input.to_i-1]
+      found = true
+    end
+  else
+    if songs.include?(user_input)
+      play_song = user_input
+      found = true
+    end
+  end
+  if found
+    puts "Playing #{play_song}"
   else
     puts "invalid input, please try again"
   end
@@ -35,23 +47,22 @@ def exit_jukebox()
   puts "Goodbye"
 end
 
-def run()
-  puts "Please enter a command:"
-  user_input = gets.strip
-  
-  while user_input != "exit" do
+def run(songs)
+  loop do
+    puts "Please enter a command:"
+    user_input = gets.strip
     if user_input == "play"
       play(songs)
-      break
     elsif user_input == "help"
       help()
-      break
     elsif user_input == "list"
       list(songs)
-      break
+    elsif user_input == "exit"
+      exit_jukebox()
     else
       puts "invalid input"
     end
+    
+    break if user_input == "exit"
   end
-  exit_jukebox()
 end
